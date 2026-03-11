@@ -12,7 +12,9 @@ class DevScriptConfig:
 def read_config() -> DevScriptConfig:
     if os.path.isfile('devscript.json'):
         with open('devscript.json', encoding='utf-8') as file:
-            return DevScriptConfig('json', json.load(file))
+            data = json.load(file)
+            if '$schema' in data: del data['$schema']
+            return DevScriptConfig('json', data)
     elif os.path.isfile('pyproject.toml'):
         with open('pyproject.toml', encoding='utf-8') as file:
             return DevScriptConfig('toml', tomllib.load(file)) # type: ignore
@@ -41,7 +43,7 @@ class DevScriptCore:
 def main():
     core = DevScriptCore()
     parser = argparse.ArgumentParser()
-    parser.add_argument('command', type=str, help='script to run')
+    parser.add_argument('command', type=str, help='script to run', choices=core.commands_list())
     args, argv = parser.parse_known_args()
     core.run(args.command, argv)
 
