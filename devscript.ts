@@ -8,7 +8,7 @@ import { ArgumentParser } from "argparse";
 
 type ConfigType = 'json' | 'toml' | 'npmjs' | 'yaml';
 
-const __version__ = '0.1.0'
+export const __version__ = '0.1.0'
 
 interface DevScriptConfig {
     type: ConfigType;
