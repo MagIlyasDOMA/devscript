@@ -9,27 +9,28 @@ class DevScriptConfig:
     data: dict
 
 
-def read_config() -> DevScriptConfig:
-    if os.path.isfile('devscript.json'):
-        with open('devscript.json', encoding='utf-8') as file:
-            data = json.load(file)
-            if '$schema' in data: del data['$schema']
-            return DevScriptConfig('json', data)
-    elif os.path.isfile('pyproject.toml'):
-        with open('pyproject.toml', encoding='utf-8') as file:
-            return DevScriptConfig('toml', tomllib.load(file)) # type: ignore
-    else: raise FileNotFoundError('devscript.json or pyproject.toml not found')
-
-
 class DevScriptCore:
     def __init__(self):
-        self._config_obj = read_config()
+        self._config_obj = self.read_config()
         if self._config_obj.type == 'json':
             self.config = self._config_obj.data
             self._config_file = 'devscript.json'
         else:
             self.config = self._config_obj.data['devscript']
             self._config_file = 'pyproject.toml'
+
+    @staticmethod
+    def read_config() -> DevScriptConfig:
+        if os.path.isfile('devscript.json'):
+            with open('devscript.json', encoding='utf-8') as file:
+                data = json.load(file)
+                if '$schema' in data: del data['$schema']
+                return DevScriptConfig('json', data)
+        elif os.path.isfile('pyproject.toml'):
+            with open('pyproject.toml', 'rb') as file:
+                return DevScriptConfig('toml', tomllib.load(file))
+        else:
+            raise FileNotFoundError('devscript.json or pyproject.toml not found')
 
     def commands_list(self):
         return self.config.keys()

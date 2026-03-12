@@ -1,0 +1,51 @@
+{
+  "name": "devscript",
+  "version": "1.0.0",
+  "description": "A utility for managing custom development scripts via JSON or TOML configuration",
+  "keywords": [
+    "cli",
+    "scripts"
+  ],
+  "bin": {
+    "devscript": "devscript.js",
+    "devscr": "devscript.js",
+    "devs": "devscript.js",
+    "dvs": "devscript.js"
+  },
+  "homepage": "https://github.com/MagIlyasDOMA/devscript#readme",
+  "bugs": {
+    "url": "https://github.com/MagIlyasDOMA/devscript/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MagIlyasDOMA/devscript.git"
+  },
+  "license": "GPL-3.0-only",
+  "author": "Маг Ильяс DOMA (MagIlyasDOMA)",
+  "type": "module",
+  "main": "devscript.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@types/argparse": "^2.0.17",
+    "@types/node": "^25.4.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "argparse": "^2.0.1",
+    "smol-toml": "^1.6.0"
+  },
+  "files": [
+    "devscript.js",
+    "devscript.d.ts",
+    "devscript.js.map",
+    "devscript.d.ts.map",
+    "README.md",
+    "schema.json",
+    "LICENSE"
+  ],
+  "devscript": {
+
+  }
+}
