@@ -6,3 +6,4 @@ dist/
 *.egg-info/
 /devscript.yaml
 *.tgz
+*.pyc
