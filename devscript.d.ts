@@ -1,14 +1,15 @@
 #!/usr/bin/env node
-type ConfigType = 'json' | 'toml';
+type ConfigType = 'json' | 'toml' | 'npmjs' | 'yaml';
 interface DevScriptConfig {
     type: ConfigType;
     data: any;
 }
 declare class DevScriptCore {
-    private configObj;
+    protected configObj: DevScriptConfig;
     config: any;
-    private configFile;
+    protected configFile: string;
     constructor();
+    private error;
     read_config(): DevScriptConfig;
     commands_list(): string[];
     run(command: string, argv: string[]): void;

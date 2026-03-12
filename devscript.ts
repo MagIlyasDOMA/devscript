@@ -2,10 +2,13 @@
 
 import fs from 'fs';
 import { execSync } from 'child_process';
-import * as TOML from 'smol-toml';
+import TOML from 'smol-toml';
+import YAML from 'yaml'
 import { ArgumentParser } from "argparse";
 
-type ConfigType = 'json' | 'toml';
+type ConfigType = 'json' | 'toml' | 'npmjs' | 'yaml';
+
+const __version__ = '0.1.0'
 
 interface DevScriptConfig {
     type: ConfigType;
@@ -13,9 +16,10 @@ interface DevScriptConfig {
 }
 
 class DevScriptCore {
-    private configObj: DevScriptConfig;
+    protected configObj: DevScriptConfig;
     public config: any;
-    private configFile: string;
+    // @ts-ignore
+    protected configFile: string;
 
     constructor() {
         this.configObj = this.read_config();
@@ -23,10 +27,22 @@ class DevScriptCore {
         if (this.configObj.type === 'json') {
             this.config = this.configObj.data;
             this.configFile = 'devscript.json';
-        } else {
+        } else if (this.configObj.type === 'yaml') {
+            this.config = this.configObj.data
+            this.configFile = 'devscript.yaml';
+        } else if (this.configObj.type === 'toml') {
+            if (this.configObj.data.devscript) this.error()
             this.config = this.configObj.data['devscript'];
             this.configFile = 'pyproject.toml';
-        }
+        } else if (this.configObj.type === 'npmjs') {
+            if (this.configObj.data.devscript) this.error()
+            this.config = this.configObj.data['devscript'];
+            this.configFile = 'package.json';
+        } else this.error()
+    }
+
+    private error() {
+        throw new Error('Config not found')
     }
 
     public read_config(): DevScriptConfig {
@@ -35,15 +51,19 @@ class DevScriptCore {
             const data = JSON.parse(content);
             if ('$schema' in data) delete data['$schema'];
             return { type: 'json', data };
-        }
-        else if (fs.existsSync('pyproject.toml')) {
+        } else if (fs.existsSync('devscript.yaml')) {
+            const content = fs.readFileSync('devscript.yaml', 'utf-8')
+            const data = YAML.parse(content)
+            return { type: 'yaml', data }
+        } else if (fs.existsSync('pyproject.toml')) {
             const content = fs.readFileSync('pyproject.toml', 'utf-8');
             const data = TOML.parse(content);
             return { type: 'toml', data };
-        }
-        else {
-            throw new Error('devscript.json or pyproject.toml not found');
-        }
+        } else if (fs.existsSync('package.json')) {
+            const content = fs.readFileSync('package.json', 'utf-8');
+            const data = JSON.parse(content);
+            return { type: 'npmjs', data };
+        } else throw new Error('Config not found');
     }
 
     public commands_list(): string[] {
@@ -55,7 +75,7 @@ class DevScriptCore {
             throw new Error(`Invalid command: ${command}`);
         }
 
-        const fullCommand = [command, ...argv].join(' ');
+        const fullCommand = [this.config[command], ...argv].join(' ');
         execSync(fullCommand, { stdio: 'inherit' });
     }
 }
@@ -69,9 +89,7 @@ function main(): void {
     core.run(args.command, argv)
 }
 
-if (require.main === module) {
-    main();
-}
+main();
 
 export {DevScriptCore};
 export type {DevScriptConfig};

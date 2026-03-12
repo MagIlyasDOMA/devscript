@@ -48,6 +48,14 @@ npm link
 }
 ```
 
+#### YAML (`devscript.yaml`)
+```yaml
+build: "python -m build"
+test: "pytest tests/"
+lint: "flake8 src/"
+dev: "python -m app --debug"
+```
+
 #### TOML (`pyproject.toml`)
 ```toml
 [devscript]
@@ -55,6 +63,18 @@ build = "python -m build"
 test = "pytest tests/"
 lint = "flake8 src/"
 dev = "python -m app --debug"
+```
+
+#### `package.json`
+```json
+{
+  "devscript": {
+    "build": "python -m build",
+    "test": "pytest tests/",
+    "lint": "flake8 src/",
+    "dev": "python -m app --debug"
+  }
+}
 ```
 
 ### Запуск команд
