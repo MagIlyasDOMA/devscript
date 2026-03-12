@@ -45,3 +45,8 @@ dvs = "devscript:main"
 
 [tool.setuptools]
 packages = ["devscript"]
+
+[dependency-groups]
+dev = [
+    "build>=1.2.2.post1",
+]
