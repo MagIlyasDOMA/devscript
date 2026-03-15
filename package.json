@@ -1,6 +1,6 @@
 {
-  "name": "devscript",
-  "version": "0.1.0",
+  "name": "@hren/devscript",
+  "version": "0.1.1",
   "description": "A utility for managing custom development scripts via JSON or TOML configuration",
   "keywords": [
     "cli",

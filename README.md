@@ -1,4 +1,265 @@
+<a id="doc_en"></a>
 # DevScript
+#### [Документация на русском](#doc_ru)
+
+DevScript is a simple utility for managing custom development scripts. It allows you to define commands in JSON or TOML files and execute them through a single interface. It is available in two implementations: **Python** and **TypeScript**.
+
+## Installation
+
+### Python version
+```shell
+pip install devscript
+```
+
+#### Or install from source:
+
+```shell
+git clone https://github.com/MagIlyasDOMA/devscript.git
+cd devscript
+pip install -e .
+```
+
+### TypeScript version
+```shell
+npm install -D @hren/devscript
+# or
+yarn add -D @hren/devscript
+# or
+pnpm add -D @hren/devscript
+```
+
+#### Or install from source:
+
+```shell
+git clone https://github.com/MagIlyasDOMA/devscript.git
+cd devscript
+npm install
+npm run build
+npm link
+```
+
+### Configuration formats
+#### JSON (`devscript.json`)
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/MagIlyasDOMA/devscript/refs/heads/main/schema.json",
+  "build": "python -m build",
+  "test": "pytest tests/",
+  "lint": "flake8 src/",
+  "dev": "python -m app --debug"
+}
+```
+
+#### YAML (`devscript.yaml`)
+```yaml
+build: "python -m build"
+test: "pytest tests/"
+lint: "flake8 src/"
+dev: "python -m app --debug"
+```
+
+#### TOML (`pyproject.toml`)
+```toml
+[devscript]
+build = "python -m build"
+test = "pytest tests/"
+lint = "flake8 src/"
+dev = "python -m app --debug"
+```
+
+#### `package.json`
+```json
+{
+  "devscript": {
+    "build": "python -m build",
+    "test": "pytest tests/",
+    "lint": "flake8 src/",
+    "dev": "python -m app --debug"
+  }
+}
+```
+
+### Running commands
+#### The package provides four CLI commands:
+- `devscript` — full name
+- `devscr` — abbreviation
+- `devs` — short
+- `dvs` — shortest
+
+#### All of them work the same:
+```shell
+# Show the list of available commands
+devscript --help
+
+# Run a command
+devscript build
+devscr dev
+devs test
+dvs lint 
+
+# Pass arguments to a command
+devscript dev --port 8000 --reload
+```
+Here is the translation of the text into English, with the markdown formatting preserved:
+
+## Examples
+### Example 1: Basic usage
+```toml
+# pyproject.toml
+[devscript]
+start = "uvicorn main:app --reload"
+migrate = "alembic upgrade head"
+shell = "ipython"
+```
+
+```shell
+devs start      # Starts the uvicorn server
+devs migrate    # Applies migrations
+devs shell      # Starts IPython
+```
+
+### Example 2: Passing arguments
+```json
+{
+  "test": "pytest",
+  "cov": "pytest --cov=src"
+}
+```
+
+```shell
+devs test tests/test_api.py -v  # pytest tests/test_api.py -v
+devs cov --cov-report=html      # pytest --cov=src --cov-report=html
+```
+
+## Development
+### Python version
+```shell
+# Clone the repository
+git clone https://github.com/MagIlyasDOMA/devscript.git
+cd devscript
+
+# Install in development mode
+pip install -e .
+
+# Run tests
+devs test
+
+# Run linter
+devs lint
+```
+
+### TypeScript version
+```shell
+# Clone the repository
+git clone https://github.com/MagIlyasDOMA/devscript.git
+cd devscript
+
+# Install dependencies
+npm install
+
+# Build the project
+npm run build
+
+# Install in development mode
+npm link
+
+# Run tests
+devs test
+
+# Run linter
+devs lint
+```
+
+## Project structure
+```text
+devscript/
+├── python/                 # Python implementation
+│   ├── devscript/
+│   │   ├── __init__.py
+│   │   └── py.typed
+│   ├── pyproject.toml
+│   └── README.md
+├── typescript/             # TypeScript implementation
+│   ├── devscript.ts
+│   ├── package.json
+│   ├── tsconfig.json
+│   └── README.md
+├── schema.json             # JSON Schema for autocompletion
+└── LICENSE
+```
+
+## JSON Schema
+For autocompletion and validation in code editors, use the schema:
+```json
+{
+  "$schema": "https://raw.githubusercontent.com/MagIlyasDOMA/devscript/refs/heads/main/schema.json"
+}
+```
+
+## API
+### Using in code
+#### Python
+```python
+from devscript import DevScriptCore
+
+core = DevScriptCore()
+print("Available commands:", core.commands_list())
+core.run("build", ["--verbose"])
+```
+
+#### Typescript
+```typescript
+import { DevScriptCore } from 'devscript';
+```
+```javascript
+const core = new DevScriptCore();
+console.log("Available commands:", core.commands_list());
+core.run("build", ["--verbose"]);
+```
+
+## Requirements
+### Python version
+- Python 3.8 or higher
+- No external dependencies (uses the standard library)
+
+### TypeScript version
+- Node.js 14 or higher
+- Dependencies: argparse, smol-toml
+
+## License
+GPL-3.0-only
+
+## Author
+#### Mag Ilyas DOMA (MagIlyasDOMA)
+- GitHub: [@MagIlyasDOMA](https://github.com/MagIlyasDOMA)
+- Project: [devscript](https://github.com/MagIlyasDOMA/devscript)
+
+## Contribution
+1. Fork the repository
+2. Create a branch for the feature (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## Frequently Asked Questions
+##### Q: Can I use both versions at the same time?
+A: Yes, they do not conflict as they use different commands for installation (pip vs npm).
+
+##### Q: Are other configuration formats supported?
+A: Currently, JSON, YAML, pyproject.toml, and package.json are supported.
+
+##### Q: How do I add a new command?
+A: Just add a new entry in the configuration file with the command name and the corresponding shell command.
+
+##### Q: Does it work on Windows?
+A: Yes, both versions have been tested on Windows.
+
+
+---
+
+<a id="doc_ru"></a>
+# DevScript
+#### [Documentation in English](#doc_en)
 
 DevScript — это простая утилита для управления пользовательскими скриптами разработки. Она позволяет определять команды в JSON или TOML файлах и запускать их через единый интерфейс. Доступна в двух реализациях: **Python** и **TypeScript**.
 
