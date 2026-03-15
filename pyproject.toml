@@ -49,4 +49,5 @@ packages = ["devscript"]
 [dependency-groups]
 dev = [
     "build>=1.2.2.post1",
+    "pyinstaller>=6.19.0",
 ]

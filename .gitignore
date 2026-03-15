@@ -7,3 +7,4 @@ dist/
 /devscript.yaml
 *.tgz
 *.pyc
+.pypirc
