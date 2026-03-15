@@ -19,11 +19,11 @@ pip install -e .
 
 ### TypeScript версия
 ```shell
-npm install -D devscript
+npm install -D @hren/devscript
 # или
-yarn add -D devscript
+yarn add -D @hren/devscript
 # или
-pnpm add -D devscript
+pnpm add -D @hren/devscript
 ```
 
 #### Или установка из исходного кода:
