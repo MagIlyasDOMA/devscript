@@ -2,7 +2,7 @@ import argparse, os, json, tomllib, yaml
 from dataclasses import dataclass
 from typing import Literal
 
-__version__ = '0.1.0'
+__version__ = '0.1.2'
 
 
 @dataclass
@@ -22,7 +22,7 @@ class DevScriptCore:
                 self.config = self._config_obj.data
                 self._config_file = 'devscript.yaml'
             elif self._config_obj.type == 'toml':
-                self.config = self._config_obj.data['devscript']
+                self.config = self._config_obj.data.get('tool')['devscript'] or self._config_obj.data['devscript']
                 self._config_file = 'pyproject.toml'
             elif self._config_obj.type == 'npmjs':
                 self.config = self._config_obj.data['devscript']
